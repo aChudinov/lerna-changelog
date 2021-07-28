@@ -12,6 +12,7 @@ export interface GitHubUserResponse {
 export interface GitHubIssueResponse {
   number: number;
   title: string;
+  body: string;
   pull_request?: {
     html_url: string;
   };

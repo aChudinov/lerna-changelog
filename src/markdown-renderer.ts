@@ -43,17 +43,13 @@ export default class MarkdownRenderer {
     let markdown = `## ${releaseTitle} (${release.date})`;
 
     for (const category of categoriesWithCommits) {
-      markdown += `\n\n#### ${category.name}\n`;
+      markdown += `\n\n### ${category.name}\n`;
 
       if (this.hasPackages(category.commits)) {
         markdown += this.renderContributionsByPackage(category.commits);
       } else {
         markdown += this.renderContributionList(category.commits);
       }
-    }
-
-    if (release.contributors) {
-      markdown += `\n\n${this.renderContributorList(release.contributors)}`;
     }
 
     return markdown;
@@ -99,16 +95,15 @@ export default class MarkdownRenderer {
     if (issue) {
       let markdown = "";
 
-      if (issue.number && issue.pull_request && issue.pull_request.html_url) {
-        const prUrl = issue.pull_request.html_url;
-        markdown += `[#${issue.number}](${prUrl}) `;
-      }
-
       if (issue.title && issue.title.match(COMMIT_FIX_REGEX)) {
         issue.title = issue.title.replace(COMMIT_FIX_REGEX, `Closes [#$3](${this.options.baseIssueUrl}$3)`);
       }
 
-      markdown += `${issue.title} ([@${issue.user.login}](${issue.user.html_url}))`;
+      markdown += issue.title;
+
+      if (issue.body) {
+        markdown += `\n\n${issue.body.replace(/^(.*)$/gm, "> $1")}`;
+      }
 
       return markdown;
     }
