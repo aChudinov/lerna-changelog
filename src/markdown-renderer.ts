@@ -102,7 +102,7 @@ export default class MarkdownRenderer {
       markdown += issue.title;
 
       if (issue.body) {
-        markdown += `\n\n${issue.body.replace(/^(.*)$/gm, "> $1")}`;
+        markdown += `\n\n${issue.body.replace(/^(.*)$/gm, "> $1")}\n`;
       }
 
       return markdown;
